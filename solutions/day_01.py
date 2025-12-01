@@ -1,6 +1,7 @@
 import io
 
-def part_1(f: io.TextIOWrapper):
+
+def part_1(f: io.TextIOWrapper) -> int:
     password = 0
     current = 50
 
@@ -16,10 +17,10 @@ def part_1(f: io.TextIOWrapper):
             current = 0
             password += 1
 
-    print(password)
+    return password
 
 
-def part_2(f: io.TextIOWrapper):
+def part_2(f: io.TextIOWrapper) -> int:
     password = 0
     current = 50
 
@@ -43,4 +44,4 @@ def part_2(f: io.TextIOWrapper):
             password += -current // 100
             current = 100 - (-current % 100)
 
-    print(password)
+    return password

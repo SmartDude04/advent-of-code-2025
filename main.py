@@ -11,14 +11,14 @@ if __name__ == "__main__":
     if part == 1:
         if use_example:
             with open("example.txt") as f:
-                program.part_1(f)
+                print(program.part_1(f))
         else:
             with open("input.txt") as f:
-                program.part_1(f)
+                print(program.part_1(f))
     elif part == 2:
         if use_example:
             with open("example.txt") as f:
-                program.part_2(f)
+                print(program.part_2(f))
         else:
             with open("input.txt") as f:
-                program.part_2(f)
+                print(program.part_2(f))
