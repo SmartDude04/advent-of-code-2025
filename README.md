@@ -6,7 +6,3 @@ Files for the 2024 [Advent of Code](https://adventofcode.com/) programming chall
 
 * Python 3.14+
 * `uv` package manager
-
-# Running Specific Solutions
-
-All code is run through `main.py`. Import the correct module and run `main` with the appropriate input placed in `/input.txt`.
