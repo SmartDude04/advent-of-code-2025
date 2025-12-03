@@ -1,7 +1,7 @@
 import io
 
 def highest_battery(cur: str, length: int) -> int:
-    # Same greedy algorithm as part 1, but with a varying battery length (12 in this case, but could be anything)
+    # Greedy algorithm; chooses the best battery at each step
     if length == 0:
         return 0
 
