@@ -5,6 +5,15 @@ from collections import deque
 from functools import reduce
 from operator import mul
 
+def connect_nodes(nodes: list[tuple[int, int, int]]) -> dict[float, tuple[tuple[int, int, int], tuple[int, int, int]]]:
+    edges: dict[float, tuple[tuple[int, int, int], tuple[int, int, int]]] = {}
+    for i, node1 in enumerate(nodes):
+        for node2 in nodes[i + 1:]:
+            dist = math.sqrt((node2[0] - node1[0])**2 + (node2[1] - node1[1])**2 + (node2[2] - node1[2])**2)
+            # Adding directly and not to a list is safe as no unique edges are the same distance
+            edges[dist] = (node1, node2)
+    return edges
+
 def n_largest_connected_components(adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]], n: int) -> int:
     def bfs(start_node: tuple[int, int, int]) -> set[tuple[int, int, int]]:
         nodes: set[tuple[int, int, int]] = set()
@@ -31,12 +40,7 @@ def n_largest_connected_components(adj_list: dict[tuple[int, int, int], list[tup
 
 def part_1(f: io.TextIOWrapper) -> int:
     nodes: list[tuple[int, int, int]] = cast(list[tuple[int, int, int]], [tuple(map(int, line.strip().split(","))) for line in f.readlines()])
-    edges: dict[float, tuple[tuple[int, int, int], tuple[int, int, int]]] = {}
-    for i, node1 in enumerate(nodes):
-        for node2 in nodes[i + 1:]:
-            dist = math.sqrt((node2[0] - node1[0])**2 + (node2[1] - node1[1])**2 + (node2[2] - node1[2])**2)
-            # Adding directly and not to a list is safe as no unique edges are the same distance
-            edges[dist] = (node1, node2)
+    edges = connect_nodes(nodes)
     
     distances: list[float] = list(edges.keys())
     distances.sort()
@@ -53,4 +57,7 @@ def part_1(f: io.TextIOWrapper) -> int:
         adj_list[node2].append((node1, distances[i]))
     
     return n_largest_connected_components(adj_list, 3)
-    
+
+
+def part_2(f: io.TextIOWrapper) -> int:
+    pass
