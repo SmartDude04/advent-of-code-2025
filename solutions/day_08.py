@@ -14,24 +14,25 @@ def connect_nodes(nodes: list[tuple[int, int, int]]) -> dict[float, tuple[tuple[
             edges[dist] = (node1, node2)
     return edges
 
+def bfs(adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]], start_node: tuple[int, int, int]) -> set[tuple[int, int, int]]:
+    nodes: set[tuple[int, int, int]] = set()
+    queue: deque[tuple[int, int, int]] = deque()
+    queue.append(start_node)
+    while len(queue) != 0:
+        cur = queue.popleft()
+        for edge in adj_list[cur]:
+            if edge[0] not in nodes:
+                nodes.add(edge[0])
+                queue.append(edge[0])
+    return nodes
+
 def n_largest_connected_components(adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]], n: int) -> int:
-    def bfs(start_node: tuple[int, int, int]) -> set[tuple[int, int, int]]:
-        nodes: set[tuple[int, int, int]] = set()
-        queue: deque[tuple[int, int, int]] = deque()
-        queue.append(start_node)
-        while len(queue) != 0:
-            cur = queue.popleft()
-            for edge in adj_list[cur]:
-                if edge[0] not in nodes:
-                    nodes.add(edge[0])
-                    queue.append(edge[0])
-        return nodes
     
     visited: set[tuple[int, int, int]] = set()
     components_size: list[int] = []
     for node, edges in adj_list.items():
         if node not in visited:
-            bfs_res = bfs(node)
+            bfs_res = bfs(adj_list, node)
             visited |= bfs_res
             components_size.append(len(bfs_res))
     components_size.sort()
