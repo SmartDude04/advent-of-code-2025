@@ -6,7 +6,7 @@ from functools import reduce
 from operator import mul
 
 def n_largest_connected_components(adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]], n: int) -> int:
-    def bfs(adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]], start_node: tuple[int, int, int]) -> set[tuple[int, int, int]]:
+    def bfs(start_node: tuple[int, int, int]) -> set[tuple[int, int, int]]:
         nodes: set[tuple[int, int, int]] = set()
         queue: deque[tuple[int, int, int]] = deque()
         queue.append(start_node)
@@ -22,7 +22,7 @@ def n_largest_connected_components(adj_list: dict[tuple[int, int, int], list[tup
     components_size: list[int] = []
     for node, edges in adj_list.items():
         if node not in visited:
-            bfs_res = bfs(adj_list, node)
+            bfs_res = bfs(node)
             visited |= bfs_res
             components_size.append(len(bfs_res))
     components_size.sort()
