@@ -61,4 +61,28 @@ def part_1(f: io.TextIOWrapper) -> int:
 
 
 def part_2(f: io.TextIOWrapper) -> int:
-    pass
+    nodes: list[tuple[int, int, int]] = cast(list[tuple[int, int, int]], [tuple(map(int, line.strip().split(","))) for line in f.readlines()])
+    edges = connect_nodes(nodes)
+
+    distances: list[float] = list(edges.keys())
+    distances.sort()
+
+    adj_list: dict[tuple[int, int, int], list[tuple[tuple[int, int, int], float]]] = {}
+    i = 0
+    
+    # Add all nodes to the graph
+    for node in nodes:
+        adj_list[node] = []
+    
+    # This will either return a value or cause an IndexOutOfBoundsException, in which case we know something went wrong
+    while True:
+        # Add an edge to the graph
+        node1, node2 = edges[distances[i]]
+        adj_list[node1].append((node2, distances[i]))
+        adj_list[node2].append((node1, distances[i]))
+        
+        # Check if a BFS will go through all nodes
+        bfs_nodes = bfs(adj_list, node1)
+        if len(bfs_nodes) == len(adj_list.keys()):
+            return node1[0] * node2[0]
+        i += 1
