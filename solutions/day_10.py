@@ -1,6 +1,21 @@
 import io
 from collections import deque
 
+def parse_line(line: str) -> tuple[tuple[bool, ...], list[tuple[int, ...]], list[int]]:
+    indicator_lights: tuple[bool, ...] = ()
+    buttons: list[tuple[int, ...]] = []
+    joltages: list[int] = []
+
+    cur_str = line[line.index("[") + 1:line.index("]")]
+    indicator_lights = tuple([True if cur == "#" else False for cur in cur_str])
+    cur_str = line[line.index("("):line.index("{") - 1]
+    for cur in cur_str.split(" "):
+        buttons.append(tuple(map(int, cur[1:-1].split(","))))
+    cur_str = line[line.index("{") + 1:line.index("}")]
+    joltages = [int(cur) for cur in cur_str.split(",")]
+    
+    return indicator_lights, buttons, joltages
+
 def min_presses(indicator_lights: tuple[bool, ...], buttons: list[tuple[int, ...]]) -> int:
         queue: deque[tuple[int, tuple[bool, ...]]] = deque()
         queue.append((0, tuple([False for _ in range(len(indicator_lights))])))
@@ -24,18 +39,7 @@ def min_presses(indicator_lights: tuple[bool, ...], buttons: list[tuple[int, ...
 def part_1(f: io.TextIOWrapper) -> int:
     lines: list[tuple[tuple[bool, ...], list[tuple[int, ...]], list[int]]] = []
     for line in f.readlines():
-        indicator_lights: tuple[bool, ...] = ()
-        buttons: list[tuple[int, ...]] = []
-        joltages: list[int] = [] # Technically not required but I have a slight feeling it will be soon!
-        
-        cur_str = line[line.index("[") + 1:line.index("]")]
-        indicator_lights = tuple([True if cur == "#" else False for cur in cur_str])
-        cur_str = line[line.index("("):line.index("{") - 1]
-        for cur in cur_str.split(" "):
-            buttons.append(tuple(map(int, cur[1:-1].split(","))))
-        cur_str = line[line.index("{") + 1:line.index("}")]
-        joltages = [int(cur) for cur in cur_str.split(",")]
-        lines.append((indicator_lights, buttons, joltages))
+        lines.append(parse_line(line))
         
     sum_min = 0
     for line in lines:
